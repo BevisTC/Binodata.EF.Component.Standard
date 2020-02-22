@@ -25,6 +25,12 @@ namespace Binodata.EF.Component.Standard.Repository
         void Edit(T entity);
 
         /// <summary>
+        /// do save changes
+        /// </summary>
+        /// <returns></returns>
+         int Save();
+
+        /// <summary>
         /// 查詢資料
         /// </summary>
         /// <param name="predicate">傳入Lamda 語法</param>

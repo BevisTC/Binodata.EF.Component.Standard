@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -77,6 +78,22 @@ namespace Binodata.EF.Component.Standard.Repository
                 }
             }
             this._disposed = true;
+        }
+
+        public int Save()
+        {
+            var entities = _entities.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                .Select(e => e.Entity);
+
+            foreach (var entity in entities)
+            {
+                var validationContext = new ValidationContext(entity);
+                Validator.ValidateObject(entity, validationContext);
+            }
+
+            return _entities.SaveChanges();
+
         }
 
         private void DisposeDbContext()
